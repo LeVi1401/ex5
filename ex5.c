@@ -27,7 +27,7 @@ void freeSong(Song* song);
 void freePlaylist(Playlist* playlist);
 void freeAll(Playlist* playlists, int numOfPlaylists);
 void printPlaylistsMenu();
-void printPlaylistMenu(int i);
+void printPlaylistMenu();
 void printAllPlaylists(Playlist* pl, int numOfPlaylists);
 void removePlaylist(int index, Playlist* playlists, int playlistsNum);
 void playAll(Playlist* playlist);
@@ -66,10 +66,9 @@ int main() {
                             Playlist* pl = &playlists[chosenPl - 1];
                             printf("playlist %s2:\n", pl->name);
 
-                            int i = 1;
                             do
                             {
-                                printPlaylistMenu(i++);
+                                printPlaylistMenu();
                                 if (scanf("%d", &action))
                                 {
                                     switch (action)
@@ -270,7 +269,7 @@ void showPlaylist(Playlist pl)
 void playSong(Song* song)
 {
     printf("Now playing %s:\n", song->title);
-    printf("%s\n", song->lyrics);
+    printf("$ %s $\n", song->lyrics);
     song->streams++;
 }
 
@@ -314,12 +313,9 @@ void printPlaylistsMenu() {
     printf("\t1. Watch playlists\n\t2. Add playlist\n\t3. Remove playlist\n\t4. exit\n");
 }
 
-void printPlaylistMenu(int i)
+void printPlaylistMenu()
 {
-    if(i == 1)
-        printf("\t1. Show Playlist\n\t2. Add Song\n\t3. Delete Song\n\t4. Sort\n\t5. Play\n\t6. back\n");
-    else
-        printf("\t1. Show Playlist\n\t2. Add Song\n\t3. Delete Song\n\t4. Sort\n\t5. Play\n\t6. exit\n");
+    printf("\t1. Show Playlist\n\t2. Add Song\n\t3. Delete Song\n\t4. Sort\n\t5. Play\n\t6. exit\n");
 }
 
 void printAllPlaylists(Playlist* pl, int numOfPlaylists)
