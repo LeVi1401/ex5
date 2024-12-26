@@ -64,7 +64,7 @@ int main() {
                         while(chosenPl != numOfPlaylists + 1)
                         {
                             Playlist* pl = &playlists[chosenPl - 1];
-                            printf("playlist %s2:\n", pl->name);
+                            printf("playlist %s:\n", pl->name);
 
                             do
                             {
