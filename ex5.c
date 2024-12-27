@@ -194,6 +194,7 @@ int main() {
                 case 4:
                     {
                         freeAll(playlists, numOfPlaylists);
+                        free(playlists);
                         printf("Goodbye!\n");
                         break;
                     }
@@ -305,9 +306,9 @@ void freeAll(Playlist** playlists, int numOfPlaylists)
 {
     for(int i = numOfPlaylists - 1 ; i >= 0 ; i--)
     {
-        freePlaylist(*(playlists) + i);
+        freePlaylist((*playlists + i));
     }
-    free(*playlists);
+    free(playlists);
     playlists = NULL;
 }
 
