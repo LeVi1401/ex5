@@ -23,13 +23,13 @@ void deleteSong(int i, Song** songs, int songsNum);
 void addSong(Song* s);
 void showPlaylist(Playlist pl);
 void playSong(Song* song);
-void freeSong(Song* song);
+void freeSong(Song** song);
 void freePlaylist(Playlist* playlist);
-void freeAll(Playlist* playlists, int numOfPlaylists);
+void freeAll(Playlist** playlists, int numOfPlaylists);
 void printPlaylistsMenu();
 void printPlaylistMenu();
 void printAllPlaylists(Playlist* pl, int numOfPlaylists);
-void removePlaylist(int index, Playlist* playlists, int playlistsNum);
+void removePlaylist(int index, Playlist* playlists, int numOfPlaylists);
 void playAll(Playlist* playlist);
 void sortPlaylist(Playlist* playlist, int sort);
 void sortByYear(Playlist* playlist);
@@ -193,7 +193,7 @@ int main() {
                     }
                 case 4:
                     {
-                        freeAll(playlists, numOfPlaylists);
+                        freeAll(&playlists, numOfPlaylists);
                         printf("Goodbye!\n");
                         break;
                     }
@@ -235,11 +235,12 @@ char* getInput()
 
 void deleteSong(int index, Song** songs, int songsNum)
 {
-    freeSong(songs[index]);
+    freeSong(&songs[index]);
     for(int i = index; (i + 1) < songsNum ; i++)
     {
         songs[i] = songs[i + 1];
     }
+    songs[songsNum - 1] = NULL;
     printf("Song deleted successfully.\n");
 }
 
@@ -274,16 +275,16 @@ void playSong(Song* song)
 }
 
 
-void freeSong(Song* song)
+void freeSong(Song** song)
 {
-    free(song->title);
-    song->title = NULL;
-    free(song->artist);
-    song->artist = NULL;
-    free(song->lyrics);
-    song->lyrics = NULL;
-    free(song);
-    song = NULL;
+    free((*song)->title);
+    (*song)->title = NULL;
+    free((*song)->artist);
+    (*song)->artist = NULL;
+    free((*song)->lyrics);
+    (*song)->lyrics = NULL;
+    free((*song));
+    (*song) = NULL;
 }
 
 void freePlaylist(Playlist* playlist)
@@ -292,19 +293,19 @@ void freePlaylist(Playlist* playlist)
     playlist->name = NULL;
     for(int i = 0 ; i < playlist->songsNum ; i++)
     {
-        freeSong(playlist->songs[i]);
+        freeSong(&(playlist->songs[i]));
     }
     free(playlist->songs);
     playlist->songs = NULL;
 }
 
-void freeAll(Playlist* playlists, int numOfPlaylists)
+void freeAll(Playlist** playlists, int numOfPlaylists)
 {
     for(int i = numOfPlaylists - 1 ; i >= 0 ; i--)
     {
-        freePlaylist(playlists + i);
+        freePlaylist(*(playlists) + i);
     }
-    free(playlists);
+    free(*playlists);
     playlists = NULL;
 }
 
@@ -328,13 +329,15 @@ void printAllPlaylists(Playlist* pl, int numOfPlaylists)
     printf("\t%d. Back to main menu\n", numOfPlaylists + 1);
 }
 
-void removePlaylist(int index, Playlist* playlists, int playlistsNum)
+void removePlaylist(int index, Playlist* playlists, int numOfPlaylists)
 {
     freePlaylist(&playlists[index]);
-    for(int i = index ; (i + 1) < playlistsNum ; i++)
+    for(int i = index ; (i + 1) < numOfPlaylists ; i++)
     {
         playlists[i] = playlists[i + 1];
     }
+    playlists[numOfPlaylists - 1].songs = NULL;
+    playlists[numOfPlaylists - 1].name = NULL;
     printf("Playlist deleted.\n");
 }
 
