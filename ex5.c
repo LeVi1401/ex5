@@ -193,7 +193,7 @@ int main() {
                     }
                 case 4:
                     {
-                        freeAll(&playlists, numOfPlaylists);
+                        //freeAll(&playlists, numOfPlaylists);
                         printf("Goodbye!\n");
                         break;
                     }
