@@ -40,7 +40,7 @@ void sortAlphabetically(Playlist* playlist);
 
 int main() {
     int choice, numOfPlaylists = 0;
-    Playlist* playlists = (Playlist*)calloc(1,sizeof(Playlist));
+    Playlist** playlists = (Playlist**)calloc(1,sizeof(Playlist*));
     if(playlists == NULL){printf("malloc failed"); exit(1);}
 
     do
@@ -54,7 +54,7 @@ int main() {
                 case 1:
                     {
                         int chosenPl = 0, action = 0;
-                        printAllPlaylists(playlists, numOfPlaylists);
+                        printAllPlaylists(*playlists, numOfPlaylists);
                         scanf("%d", &chosenPl);
                         if (chosenPl <= 0 || chosenPl > numOfPlaylists + 1)
                         {
@@ -63,7 +63,7 @@ int main() {
                         }
                         while(chosenPl != numOfPlaylists + 1)
                         {
-                            Playlist* pl = &playlists[chosenPl - 1];
+                            Playlist* pl = playlists[chosenPl - 1];
                             printf("playlist %s:\n", pl->name);
 
                             do
@@ -145,7 +145,7 @@ int main() {
                                 }
 
                             }while(action != 6);
-                            printAllPlaylists(playlists, numOfPlaylists);
+                            printAllPlaylists(*playlists, numOfPlaylists);
                             scanf("%d", &chosenPl);
                             if (chosenPl <= 0 || chosenPl > numOfPlaylists + 1)
                             {
@@ -167,14 +167,14 @@ int main() {
                         pl->name = getInput();
                         playlists = realloc(playlists, (numOfPlaylists + 1) * sizeof(Playlist));
                         if(playlists == NULL){printf("malloc failed"); exit(1);}
-                        playlists[numOfPlaylists] = *pl;
+                        playlists[numOfPlaylists] = pl;
                         numOfPlaylists++;
                         break;
                     }
                 case 3:
                     {
                         int chosenPl = 0;
-                        printAllPlaylists(playlists, numOfPlaylists);
+                        printAllPlaylists(*playlists, numOfPlaylists);
                         scanf("%d", &chosenPl);
                         if (chosenPl <= 0 || chosenPl > numOfPlaylists + 1)
                         {
@@ -183,7 +183,7 @@ int main() {
                         }
                         if(chosenPl == numOfPlaylists + 1)
                             break;
-                        removePlaylist(chosenPl - 1, playlists, numOfPlaylists);
+                        removePlaylist(chosenPl - 1, *playlists, numOfPlaylists);
                         numOfPlaylists--;
                         if(numOfPlaylists == 0)
                             break;
@@ -193,7 +193,7 @@ int main() {
                     }
                 case 4:
                     {
-                        //freeAll(&playlists, numOfPlaylists);
+                        freeAll(playlists, numOfPlaylists);
                         printf("Goodbye!\n");
                         break;
                     }
@@ -297,6 +297,8 @@ void freePlaylist(Playlist* playlist)
     }
     free(playlist->songs);
     playlist->songs = NULL;
+    free(playlist);
+    playlist = NULL;
 }
 
 void freeAll(Playlist** playlists, int numOfPlaylists)
