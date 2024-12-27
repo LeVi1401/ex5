@@ -29,7 +29,7 @@ void freeAll(Playlist** playlists, int numOfPlaylists);
 void printPlaylistsMenu();
 void printPlaylistMenu();
 void printAllPlaylists(Playlist** pl, int numOfPlaylists);
-void removePlaylist(int index, Playlist* playlists, int numOfPlaylists);
+void removePlaylist(int index, Playlist** playlists, int numOfPlaylists);
 void playAll(Playlist* playlist);
 void sortPlaylist(Playlist* playlist, int sort);
 void sortByYear(Playlist* playlist);
@@ -184,7 +184,7 @@ int main() {
                         }
                         if(chosenPl == numOfPlaylists + 1)
                             break;
-                        removePlaylist(chosenPl - 1, *playlists, numOfPlaylists);
+                        removePlaylist(chosenPl - 1, playlists, numOfPlaylists);
                         numOfPlaylists--;
                         if(numOfPlaylists == 0)
                             break;
@@ -333,15 +333,13 @@ void printAllPlaylists(Playlist** pl, int numOfPlaylists)
     printf("\t%d. Back to main menu\n", numOfPlaylists + 1);
 }
 
-void removePlaylist(int index, Playlist* playlists, int numOfPlaylists)
+void removePlaylist(int index, Playlist** playlists, int numOfPlaylists)
 {
-    freePlaylist(&playlists[index]);
+    freePlaylist(playlists[index]);
     for(int i = index ; (i + 1) < numOfPlaylists ; i++)
     {
         playlists[i] = playlists[i + 1];
     }
-    playlists[numOfPlaylists - 1].songs = NULL;
-    playlists[numOfPlaylists - 1].name = NULL;
     printf("Playlist deleted.\n");
 }
 
