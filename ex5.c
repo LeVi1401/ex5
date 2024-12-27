@@ -28,7 +28,7 @@ void freePlaylist(Playlist* playlist);
 void freeAll(Playlist** playlists, int numOfPlaylists);
 void printPlaylistsMenu();
 void printPlaylistMenu();
-void printAllPlaylists(Playlist* pl, int numOfPlaylists);
+void printAllPlaylists(Playlist** pl, int numOfPlaylists);
 void removePlaylist(int index, Playlist* playlists, int numOfPlaylists);
 void playAll(Playlist* playlist);
 void sortPlaylist(Playlist* playlist, int sort);
@@ -54,7 +54,7 @@ int main() {
                 case 1:
                     {
                         int chosenPl = 0, action = 0;
-                        printAllPlaylists(*playlists, numOfPlaylists);
+                        printAllPlaylists(playlists, numOfPlaylists);
                         scanf("%d", &chosenPl);
                         if (chosenPl <= 0 || chosenPl > numOfPlaylists + 1)
                         {
@@ -145,7 +145,7 @@ int main() {
                                 }
 
                             }while(action != 6);
-                            printAllPlaylists(*playlists, numOfPlaylists);
+                            printAllPlaylists(playlists, numOfPlaylists);
                             scanf("%d", &chosenPl);
                             if (chosenPl <= 0 || chosenPl > numOfPlaylists + 1)
                             {
@@ -165,8 +165,9 @@ int main() {
                         pl->name = NULL;
                         printf("Enter playlist's name:\n");
                         pl->name = getInput();
-                        playlists = realloc(playlists, (numOfPlaylists + 1) * sizeof(Playlist));
+                        playlists = realloc(playlists, (numOfPlaylists + 1) * sizeof(Playlist*));
                         if(playlists == NULL){printf("malloc failed"); exit(1);}
+                        playlists[numOfPlaylists] = NULL;
                         playlists[numOfPlaylists] = pl;
                         numOfPlaylists++;
                         break;
@@ -174,7 +175,7 @@ int main() {
                 case 3:
                     {
                         int chosenPl = 0;
-                        printAllPlaylists(*playlists, numOfPlaylists);
+                        printAllPlaylists(playlists, numOfPlaylists);
                         scanf("%d", &chosenPl);
                         if (chosenPl <= 0 || chosenPl > numOfPlaylists + 1)
                         {
@@ -322,12 +323,12 @@ void printPlaylistMenu()
     printf("\t1. Show Playlist\n\t2. Add Song\n\t3. Delete Song\n\t4. Sort\n\t5. Play\n\t6. exit\n");
 }
 
-void printAllPlaylists(Playlist* pl, int numOfPlaylists)
+void printAllPlaylists(Playlist** pl, int numOfPlaylists)
 {
     printf("Choose a playlist:\n");
     for(int i = 0 ; i < numOfPlaylists ; i++)
     {
-        printf("\t%d. %s\n", i + 1, (pl + i)->name);
+        printf("\t%d. %s\n", i + 1, pl[i]->name);
     }
     printf("\t%d. Back to main menu\n", numOfPlaylists + 1);
 }
