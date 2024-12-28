@@ -79,6 +79,8 @@ int main() {
                                                 showPlaylist(*pl);
                                                 printf("choose a song to play, or 0 to quit:\n");
                                                 scanf("%d", &chosenSong);
+                                                if(pl->songsNum == 0)
+                                                    break;
                                                 while(chosenSong != 0)
                                                 {
                                                     if(chosenSong > pl->songsNum)
@@ -113,6 +115,8 @@ int main() {
                                                     break;
                                                 deleteSong(chosenSong - 1 , pl->songs, pl->songsNum);
                                                 pl->songsNum--;
+                                                if(pl->songsNum == 0)
+                                                    break;
                                                 pl->songs = realloc(pl->songs, (pl->songsNum) * sizeof(Song*));
                                                 if(pl->songs == NULL){printf("malloc failed"); exit(1);}
                                                 break;
