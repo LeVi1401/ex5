@@ -344,6 +344,7 @@ void removePlaylist(int index, Playlist** playlists, int numOfPlaylists)
     {
         playlists[i] = playlists[i + 1];
     }
+    playlists[numOfPlaylists - 1] = NULL;
     printf("Playlist deleted.\n");
 }
 
