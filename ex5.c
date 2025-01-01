@@ -226,15 +226,14 @@ char* getInput()
 
     scanf(" %c", &temp);
     *(input) = temp;
-    while(scanf("%c", &temp) && temp != '\n')
+    while(scanf("%c", &temp) && temp != '\r' && temp != '\n')
     {
         input = realloc(input, ++i);
         if(input == NULL){printf("malloc failed"); exit(1);}
         *(input + (i - 1)) = temp;
     }
-    /*input = realloc(input, i + 1);
-    if(input == NULL){printf("malloc failed"); exit(1);}*/
-    *(input + (i - 1)) = '\0';
+    input = realloc(input, i + 1);
+    if(input == NULL){printf("malloc failed"); exit(1);}
 
     return input;
 }
