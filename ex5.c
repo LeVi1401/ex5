@@ -232,9 +232,9 @@ char* getInput()
         if(input == NULL){printf("malloc failed"); exit(1);}
         *(input + (i - 1)) = temp;
     }
-    input = realloc(input, i + 1);
-    if(input == NULL){printf("malloc failed"); exit(1);}
-    *(input + i) = '\0';
+    /*input = realloc(input, i + 1);
+    if(input == NULL){printf("malloc failed"); exit(1);}*/
+    *(input + (i - 1)) = '\0';
 
     return input;
 }
