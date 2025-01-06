@@ -235,6 +235,8 @@ char* getInput()
         if(input == NULL){printf("malloc failed"); exit(1);}
         *(input + (i - 1)) = temp;
     }
+    if(temp == '\r')
+        scanf("%*c");
     input = realloc(input, i + 1);
     if(input == NULL){printf("malloc failed"); exit(1);}
 
